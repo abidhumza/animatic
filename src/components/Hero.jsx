@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import Button from "./Button";
 import VideoPreview from "./VideoPreview";
+import VideoModal from "./VideoModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,8 @@ const Hero = () => {
 
   const [loading, setLoading] = useState(true);
   const [loadedVideos, setLoadedVideos] = useState(0);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const totalVideos = 4;
   const nextVdRef = useRef(null);
@@ -34,6 +37,10 @@ const Hero = () => {
 
     setCurrentIndex((prevIndex) => (prevIndex % totalVideos) + 1);
   };
+
+  const handleWatchTrailerClick = () => {
+    setIsModalOpen(true);
+  }; 
 
   useGSAP(
     () => {
@@ -84,6 +91,11 @@ const Hero = () => {
 
   return (
     <div className="relative h-dvh w-screen overflow-x-hidden">
+      <VideoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        videoSrc="videos/trailer.mp4"
+      />
       {loading && (
         <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
           <div className="three-body">
@@ -158,6 +170,7 @@ const Hero = () => {
               title="Watch trailer"
               leftIcon={<TiLocationArrow />}
               containerClass="bg-yellow-300 flex-center gap-1"
+              onClick={handleWatchTrailerClick}
             />
           </div>
         </div>
